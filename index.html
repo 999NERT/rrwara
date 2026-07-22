@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANGELKACS | SETUP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=Paytone+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
@@ -13,56 +13,125 @@
 <body>
     <div class="background-overlay"></div>
 
-    <!-- Top Bar -->
-    <header class="top-bar">
-        <div class="container">
-            <div class="top-logo">ANGELKACS</div>
-            <div class="top-links">
-                <div class="social-links">
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <a href="./" class="brand">
+                    <span class="brand-mark">A</span>
+                    <span class="brand-text">ANGELKACS</span>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <span class="nav-section-label">Setup</span>
+                <a href="./" class="nav-link active" data-page="overview"><i class="fas fa-gauge-high"></i><span>Overview</span></a>
+                <a href="games/" class="nav-link" data-page="games"><i class="fas fa-crosshairs"></i><span>Game</span></a>
+                <a href="video/" class="nav-link" data-page="video"><i class="fas fa-display"></i><span>Video</span></a>
+                <a href="eq/" class="nav-link" data-page="eq"><i class="fas fa-headset"></i><span>Gear</span></a>
+                <a href="binds/" class="nav-link" data-page="binds"><i class="fas fa-keyboard"></i><span>Binds</span></a>
+                <a href="config/" class="nav-link" data-page="config"><i class="fas fa-terminal"></i><span>Config</span></a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="https://angelkacs.pl" target="_blank" class="ext-link">
+                    <span>angelkacs.pl</span>
+                    <i class="fas fa-arrow-up-right-from-square"></i>
+                </a>
+                <div class="sidebar-socials">
                     <a href="https://www.youtube.com/@angelkacs" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
                     <a href="https://www.twitch.tv/angelkacs" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
                     <a href="https://discord.gg/rKGKQbuBxm" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
                 </div>
-                <div class="contact-info">
-                    <div>&copy; <span id="currentYear"></span> ANGELKACS. All rights reserved.</div>
-                    <div>Contact: <a href="mailto:angelka@stormmedia.gg">angelka@stormmedia.gg</a></div>
+                <div class="sidebar-meta">
+                    &copy; <span id="currentYear"></span> ANGELKACS<br>
+                    <a href="mailto:angelka@stormmedia.gg">angelka@stormmedia.gg</a>
                 </div>
             </div>
-        </div>
-    </header>
+        </aside>
 
-    <main class="main-content">
-        <section class="grid-section">
-            <div class="container">
-                <div style="text-align:center; margin-bottom:50px;">
-                    <h1 style="font-family:'Paytone One',sans-serif; font-size:2.8rem; color:var(--accent); text-transform:uppercase; letter-spacing:4px; text-shadow:0 0 20px var(--accent-glow); margin-bottom:10px;">SETUP</h1>
-                    <p style="font-family:'Titillium Web',sans-serif; font-size:0.92rem; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin:0;">CS2 Configuration &amp; Equipment</p>
+        <div class="app-main">
+            <header class="topbar">
+                <div class="topbar-heading">
+                    <span class="page-eyebrow">Setup / Overview</span>
+                    <h1 class="page-title">Control Panel</h1>
                 </div>
-                <div class="grid-container">
-                    <a href="games/" class="grid-item">
-                        <div class="grid-icon"><i class="fas fa-gamepad"></i></div>
-                        <div class="grid-title">Game Settings</div>
-                    </a>
-                    <a href="video/" class="grid-item">
-                        <div class="grid-icon"><i class="fas fa-video"></i></div>
-                        <div class="grid-title">Video Settings</div>
-                    </a>
-                    <a href="eq/" class="grid-item">
-                        <div class="grid-icon"><i class="fas fa-keyboard"></i></div>
-                        <div class="grid-title">Gear &amp; Equipment</div>
-                    </a>
-                    <a href="binds/" class="grid-item">
-                        <div class="grid-icon"><i class="fas fa-key"></i></div>
-                        <div class="grid-title">Key Binds</div>
-                    </a>
-                    <a href="config/" class="grid-item">
-                        <div class="grid-icon"><i class="fas fa-code"></i></div>
-                        <div class="grid-title">Full Config</div>
-                    </a>
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span class="status-label">CS2 &middot; Live Config</span>
                 </div>
-            </div>
-        </section>
-    </main>
+            </header>
+
+            <main class="page-content">
+                <section class="hero">
+                    <h1>Kompletny setup <span>ANGELKACS</span></h1>
+                    <p>Mysz, celownik, video, sprzęt i pełny plik konfiguracyjny CS2 &mdash; wszystko w jednym miejscu. Wybierz kategorię, żeby zobaczyć szczegóły.</p>
+                </section>
+
+                <section class="bento">
+                    <a href="games/" class="bento-tile bento-tile--wide">
+                        <div class="tile-top">
+                            <div class="tile-icon"><i class="fas fa-crosshairs"></i></div>
+                            <span class="tile-index">01</span>
+                        </div>
+                        <div class="tile-bottom">
+                            <div class="tile-title">Game Settings</div>
+                            <div class="tile-desc">Mysz, celownik, viewmodel i HUD</div>
+                        </div>
+                        <div class="tile-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </a>
+
+                    <a href="video/" class="bento-tile">
+                        <div class="tile-top">
+                            <div class="tile-icon"><i class="fas fa-display"></i></div>
+                            <span class="tile-index">02</span>
+                        </div>
+                        <div class="tile-bottom">
+                            <div class="tile-title">Video Settings</div>
+                            <div class="tile-desc">CS2, NVIDIA, monitor</div>
+                        </div>
+                        <div class="tile-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </a>
+
+                    <a href="eq/" class="bento-tile">
+                        <div class="tile-top">
+                            <div class="tile-icon"><i class="fas fa-headset"></i></div>
+                            <span class="tile-index">03</span>
+                        </div>
+                        <div class="tile-bottom">
+                            <div class="tile-title">Gear &amp; Equipment</div>
+                            <div class="tile-desc">Peryferia i specyfikacja PC</div>
+                        </div>
+                        <div class="tile-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </a>
+
+                    <a href="binds/" class="bento-tile">
+                        <div class="tile-top">
+                            <div class="tile-icon"><i class="fas fa-keyboard"></i></div>
+                            <span class="tile-index">04</span>
+                        </div>
+                        <div class="tile-bottom">
+                            <div class="tile-title">Key Binds</div>
+                            <div class="tile-desc">Wszystkie skróty klawiszowe</div>
+                        </div>
+                        <div class="tile-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </a>
+
+                    <a href="config/" class="bento-tile">
+                        <div class="tile-top">
+                            <div class="tile-icon"><i class="fas fa-terminal"></i></div>
+                            <span class="tile-index">05</span>
+                        </div>
+                        <div class="tile-bottom">
+                            <div class="tile-title">Full Config</div>
+                            <div class="tile-desc">Kompletny autoexec.cfg</div>
+                        </div>
+                        <div class="tile-arrow"><i class="fas fa-arrow-right"></i></div>
+                    </a>
+                </section>
+            </main>
+        </div>
+    </div>
 
     <script src="js/main.js"></script>
 </body>

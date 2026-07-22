@@ -12,9 +12,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize copy buttons
     initCopyButtons();
+
+    // Initialize mobile sidebar toggle
+    initSidebarToggle();
     
     console.log('ANGELKACS SETUP - Initialization complete');
 });
+
+// ===== SIDEBAR TOGGLE (mobile) =====
+function initSidebarToggle() {
+    const toggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    if (!toggle || !sidebar) return;
+
+    toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        const isOpen = sidebar.classList.contains('open');
+        toggle.innerHTML = isOpen ? '<i class="fas fa-xmark"></i>' : '<i class="fas fa-bars"></i>';
+    });
+
+    // Close the menu after navigating (mobile)
+    sidebar.querySelectorAll('.nav-link, .ext-link').forEach(link => {
+        link.addEventListener('click', () => sidebar.classList.remove('open'));
+    });
+}
 
 // ===== COPY BUTTONS =====
 function initCopyButtons() {

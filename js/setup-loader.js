@@ -1,50 +1,29 @@
 // ===== SETUP DATA LOADER =====
 
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('SETUP PAGE - Initializing...');
-    
-    // Set current year
     const yearElements = document.querySelectorAll('#currentYear');
-    yearElements.forEach(el => {
-        el.textContent = new Date().getFullYear();
-    });
-    
-    // Get current page type from URL
+    yearElements.forEach(el => { el.textContent = new Date().getFullYear(); });
+
     const path = window.location.pathname;
     const pageType = getPageTypeFromPath(path);
-    
+
     if (pageType) {
-        console.log('Loading data for:', pageType);
-        
-        // Load data for this page
         loadPageData(pageType);
-        
-        // Initialize navigation
         initPageNavigation(pageType);
-        
-        // Update page title
         updatePageTitle(pageType);
     }
-    
-    console.log('SETUP PAGE - Initialization complete');
 });
 
 // ===== HELPER FUNCTIONS =====
 function getPageTypeFromPath(path) {
     const pathParts = path.split('/').filter(part => part);
     const pageTypes = ['games', 'video', 'eq', 'binds', 'config'];
-    
     for (const type of pageTypes) {
-        if (pathParts.includes(type)) {
-            return type;
-        }
+        if (pathParts.includes(type)) return type;
     }
-    
     return null;
 }
 
-// Map page types to JSON filenames
 function getJsonFilename(pageType) {
     const jsonMap = {
         'games': 'games.json',
@@ -56,75 +35,99 @@ function getJsonFilename(pageType) {
     return jsonMap[pageType] || `${pageType}.json`;
 }
 
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+// ===== SMALL UI BUILDING BLOCKS =====
+function kvRows(items) {
+    if (!items || !items.length) return '';
+    return `<div class="kv-grid">${items.map(item => `
+        <div class="kv-row">
+            <span class="kv-label">${escHtml(item.name)}</span>
+            <span class="kv-value">${escHtml(item.value)}</span>
+        </div>
+    `).join('')}</div>`;
+}
+
+function panel(icon, title, count, bodyHtml) {
+    const iconClass = icon.includes(' ') ? icon : `fas fa-${icon}`;
+    return `
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-icon"><i class="${iconClass}"></i></div>
+                <div class="panel-title">${title}</div>
+                ${count ? `<div class="panel-count">${count}</div>` : ''}
+            </div>
+            <div class="panel-body">${bodyHtml}</div>
+        </div>
+    `;
+}
+
+function codeBlock(label, rawCode, buttonText, extraClass) {
+    return `
+        <div class="code-block ${extraClass || ''}">
+            <div class="code-block-bar">
+                <span class="code-block-dot"></span>
+                <span class="code-block-dot"></span>
+                <span class="code-block-dot"></span>
+                <span class="code-block-label">${escHtml(label)}</span>
+            </div>
+            <pre><code>${escHtml(rawCode)}</code></pre>
+            <button class="copy-btn" title="Copy">
+                <i class="far fa-copy"></i>
+                <span>${buttonText || 'Copy'}</span>
+            </button>
+        </div>
+    `;
+}
+
 // ===== LOAD PAGE DATA =====
 async function loadPageData(pageType) {
     const contentElement = document.getElementById('pageContent');
-    
-    if (!contentElement) {
-        console.error('Page content element not found');
-        return;
-    }
-    
-    // Show loading state
+    if (!contentElement) return;
+
     contentElement.innerHTML = `
         <div class="loading-state">
             <div class="loading-spinner"></div>
             <p>Loading ${pageType} settings...</p>
         </div>
     `;
-    
+
     try {
-        // Load JSON data
         const jsonFilename = getJsonFilename(pageType);
         const jsonUrl = `../data/${jsonFilename}`;
-        
         const response = await fetch(jsonUrl);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+
         const data = await response.json();
-        
-        // Render content based on page type
         let html = '';
-        
-        switch(pageType) {
-            case 'games':
-                html = renderGamesPage(data);
-                break;
-            case 'video':
-                html = renderVideoPage(data);
-                break;
-            case 'eq':
-                html = renderGearPage(data);
-                break;
-            case 'binds':
-                html = renderBindsPage(data);
-                break;
-            case 'config':
-                html = renderConfigPage(data);
-                break;
-            default:
-                html = '<div class="error-state"><p>Invalid page type</p></div>';
+
+        switch (pageType) {
+            case 'games':  html = renderGamesPage(data); break;
+            case 'video':  html = renderVideoPage(data); break;
+            case 'eq':     html = renderGearPage(data); break;
+            case 'binds':  html = renderBindsPage(data); break;
+            case 'config': html = renderConfigPage(data); break;
+            default: html = '<div class="error-state"><p>Invalid page type</p></div>';
         }
-        
-        // Update content
+
         contentElement.innerHTML = html;
-        
-        // Initialize copy buttons
-        if (typeof initCopyButtons === 'function') {
-            initCopyButtons();
-        }
-        
+
+        if (typeof initCopyButtons === 'function') initCopyButtons();
+        if (pageType === 'config') wireConfigDownload(data);
+
     } catch (error) {
-        console.error('Error loading page data:', error);
         contentElement.innerHTML = `
             <div class="error-state">
                 <i class="fas fa-exclamation-triangle"></i>
                 <h3>Failed to load settings</h3>
-                <p>${error.message}</p>
-                <button onclick="location.reload()" class="copy-btn" style="margin: 1rem auto; display: block;">
+                <p>${escHtml(error.message)}</p>
+                <button onclick="location.reload()" class="download-btn">
                     <i class="fas fa-redo"></i> Refresh Page
                 </button>
             </div>
@@ -132,339 +135,173 @@ async function loadPageData(pageType) {
     }
 }
 
-// ===== RENDER FUNCTIONS =====
+// ===== RENDER: GAMES =====
 function renderGamesPage(data) {
     if (!data) return '<div class="error-state"><p>No data available</p></div>';
-    
+
     return `
         <div class="settings-container">
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-mouse"></i>
-                    Mouse Settings
-                </h3>
-                <div class="settings-grid">
-                    ${data.mouseSettings?.map(setting => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${setting.name}</span>
-                                <span class="setting-value">${setting.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                ${data.commands?.mouse ? `
-                <div class="code-block">
-                    <pre><code>${data.commands.mouse}</code></pre>
-                    <button class="copy-btn" data-text="${data.commands.mouse}">
-                        <i class="far fa-copy"></i>
-                        <span>Copy</span>
-                    </button>
-                </div>
-                ` : ''}
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-eye"></i>
-                    Viewmodel Settings
-                </h3>
-                <div class="settings-grid">
-                    ${data.viewmodelSettings?.map(setting => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${setting.name}</span>
-                                <span class="setting-value">${setting.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                ${data.commands?.viewmodel ? `
-                <div class="code-block">
-                    <pre><code>${data.commands.viewmodel}</code></pre>
-                    <button class="copy-btn" data-text="${data.commands.viewmodel}">
-                        <i class="far fa-copy"></i>
-                        <span>Copy</span>
-                    </button>
-                </div>
-                ` : ''}
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-crosshairs"></i>
-                    Crosshair Settings
-                </h3>
-                <div class="settings-grid">
-                    ${data.crosshairSettings?.map(setting => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${setting.name}</span>
-                                <span class="setting-value">${setting.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                ${data.commands?.shareCode ? `
-                <div class="code-block">
-                    <pre><code>// Crosshair Share Code
-${data.commands.shareCode}</code></pre>
-                    <button class="copy-btn" data-text="${data.commands.shareCode}">
-                        <i class="far fa-copy"></i>
-                        <span>Copy Code</span>
-                    </button>
-                </div>
-                ` : ''}
-                
-                ${data.commands?.crosshair ? `
-                <div class="code-block">
-                    <pre><code>${data.commands.crosshair}</code></pre>
-                    <button class="copy-btn" data-text="${data.commands.crosshair}">
-                        <i class="far fa-copy"></i>
-                        <span>Copy Commands</span>
-                    </button>
-                </div>
-                ` : ''}
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-desktop"></i>
-                    HUD Settings
-                </h3>
-                <div class="settings-grid">
-                    ${data.hudSettings?.map(setting => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${setting.name}</span>
-                                <span class="setting-value">${setting.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                ${data.commands?.hud ? `
-                <div class="code-block">
-                    <pre><code>${data.commands.hud}</code></pre>
-                    <button class="copy-btn" data-text="${data.commands.hud}">
-                        <i class="far fa-copy"></i>
-                        <span>Copy</span>
-                    </button>
-                </div>
-                ` : ''}
-            </div>
+            ${panel('mouse', 'Mouse Settings', data.mouseSettings?.length, `
+                ${kvRows(data.mouseSettings)}
+                ${data.commands?.mouse ? codeBlock('mouse.cfg', data.commands.mouse, 'Copy') : ''}
+            `)}
+
+            ${panel('eye', 'Viewmodel Settings', data.viewmodelSettings?.length, `
+                ${kvRows(data.viewmodelSettings)}
+                ${data.commands?.viewmodel ? codeBlock('viewmodel.cfg', data.commands.viewmodel, 'Copy') : ''}
+            `)}
+
+            ${panel('crosshairs', 'Crosshair Settings', data.crosshairSettings?.length, `
+                ${kvRows(data.crosshairSettings)}
+                ${data.commands?.shareCode ? codeBlock('share-code', data.commands.shareCode, 'Copy Code') : ''}
+                ${data.commands?.crosshair ? codeBlock('crosshair.cfg', data.commands.crosshair, 'Copy') : ''}
+            `)}
         </div>
     `;
 }
 
+// ===== RENDER: VIDEO =====
 function renderVideoPage(data) {
     if (!data) return '<div class="error-state"><p>No data available</p></div>';
-    
+
     return `
         <div class="settings-container">
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-gamepad"></i>
-                    CS2 Video Settings
-                </h3>
-                <div class="settings-grid">
-                    ${data.cs2Settings?.map(setting => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${setting.name}</span>
-                                <span class="setting-value">${setting.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fab fa-nvidia"></i>
-                    NVIDIA Control Panel
-                </h3>
-                <div class="settings-grid">
-                    ${data.nvidiaSettings?.map(setting => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${setting.name}</span>
-                                <span class="setting-value">${setting.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-tv"></i>
-                    Monitor Calibration
-                </h3>
-                <div class="settings-grid">
-                    ${data.monitorSettings?.map(setting => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${setting.name}</span>
-                                <span class="setting-value">${setting.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
+            ${panel('gamepad', 'CS2 Video Settings', data.cs2Settings?.length, kvRows(data.cs2Settings))}
+            ${panel('fab fa-nvidia', 'NVIDIA Control Panel', data.nvidiaSettings?.length, kvRows(data.nvidiaSettings))}
+            ${panel('tv', 'Monitor Calibration', data.monitorSettings?.length, kvRows(data.monitorSettings))}
         </div>
     `;
 }
 
+// ===== RENDER: GEAR =====
 function renderGearPage(data) {
     if (!data) return '<div class="error-state"><p>No data available</p></div>';
-    
+
     return `
         <div class="settings-container">
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-keyboard"></i>
-                    Setup & Peripherals
-                </h3>
-                <div class="settings-grid">
-                    ${data.setup?.map(item => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${item.name}</span>
-                                <span class="setting-value">${item.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-desktop"></i>
-                    PC Build Specifications
-                </h3>
-                <div class="settings-grid">
-                    ${data.pcBuild?.map(item => `
-                        <div class="setting-card">
-                            <div class="setting-item">
-                                <span class="setting-name">${item.name}</span>
-                                <span class="setting-value">${item.value}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
+            ${panel('keyboard', 'Setup & Peripherals', data.setup?.length, kvRows(data.setup))}
+            ${panel('desktop', 'PC Build Specifications', data.pcBuild?.length, kvRows(data.pcBuild))}
         </div>
     `;
 }
 
+// ===== RENDER: BINDS =====
 function renderBindsPage(data) {
     if (!data) return '<div class="error-state"><p>No data available</p></div>';
-    
+
+    const rows = (data.binds || []).map(bind => `
+        <div class="bind-row">
+            <span class="bind-key">${escHtml(bind.key)}</span>
+            <span class="bind-action">${escHtml(bind.action)}</span>
+            <span class="bind-desc">${escHtml(bind.description)}</span>
+        </div>
+    `).join('');
+
     return `
         <div class="settings-container">
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-key"></i>
-                    Custom Key Binds
-                </h3>
-                
-                <table class="binds-table">
-                    <thead>
-                        <tr>
-                            <th>KEY</th>
-                            <th>ACTION</th>
-                            <th>DESCRIPTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${data.binds?.map(bind => `
-                            <tr>
-                                <td>${bind.key}</td>
-                                <td><code>${bind.action}</code></td>
-                                <td>${bind.description}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-                
-                ${data.commands?.all ? `
-                <div class="code-block">
-                    <pre><code>${data.commands.all}</code></pre>
-                    <button class="copy-btn" data-text="${data.commands.all}">
-                        <i class="far fa-copy"></i>
-                        <span>Copy All Binds</span>
-                    </button>
+            ${panel('key', 'Custom Key Binds', data.binds?.length, `
+                <div class="binds-head-row">
+                    <span>Key</span><span>Action</span><span>Description</span>
                 </div>
-                ` : ''}
-            </div>
+                <div class="binds-list">${rows}</div>
+                ${data.commands?.all ? codeBlock('all-binds.cfg', data.commands.all, 'Copy All Binds') : ''}
+            `)}
         </div>
     `;
 }
 
+// ===== RENDER: CONFIG =====
 function renderConfigPage(data) {
     if (!data) return '<div class="error-state"><p>No data available</p></div>';
-    
+
+    const raw = data.config || 'No config data available';
+    const highlighted = renderCfgSyntax(raw);
+
     return `
         <div class="settings-container">
-            <div class="settings-section">
-                <h3 class="section-title">
-                    <i class="fas fa-code"></i>
-                    Autoexec Configuration
-                </h3>
-                
+            ${panel('terminal', 'Autoexec Configuration', null, `
                 <div class="config-info">
-                    <p><strong>Config Path:</strong> ${data.configPath || 'Steam\\steamapps\\common\\Counter-Strike Global Offensive\\game\\csgo\\cfg'}</p>
-                    <p><strong>Last Updated:</strong> ${data.lastUpdated || new Date().toLocaleDateString()}</p>
+                    <div class="config-info-item"><strong>Path</strong> ${escHtml(data.configPath || 'csgo/cfg')}</div>
+                    <div class="config-info-item"><strong>Updated</strong> ${escHtml(data.lastUpdated || new Date().toLocaleDateString())}</div>
                 </div>
-                
+
                 <div class="code-block full-config">
-                    <pre><code>${data.config || 'No config data available'}</code></pre>
-                    <button class="copy-btn" data-text="${data.config || ''}">
+                    <div class="code-block-bar">
+                        <span class="code-block-dot"></span>
+                        <span class="code-block-dot"></span>
+                        <span class="code-block-dot"></span>
+                        <span class="code-block-label">autoexec.cfg</span>
+                    </div>
+                    <pre><code id="cfgContent">${highlighted}</code></pre>
+                    <button class="copy-btn" title="Copy" data-cfg-raw>
                         <i class="far fa-copy"></i>
                         <span>Copy Config</span>
                     </button>
                 </div>
-                
+
                 <div class="download-section">
-                    <a href="${data.downloadLink || '#'}" class="download-btn" download>
+                    <a href="#" class="download-btn" id="btnDownload" download="autoexec.cfg">
                         <i class="fas fa-download"></i>
                         Download autoexec.cfg
                     </a>
                 </div>
-            </div>
+            `)}
         </div>
     `;
 }
 
-// ===== PAGE NAVIGATION =====
+// Simple syntax highlighting for the raw config text
+function renderCfgSyntax(raw) {
+    return raw.split('\n').map(line => {
+        const trimmed = line.trim();
+        if (trimmed === '') return '';
+        if (trimmed.startsWith('//')) return `<span class="cfg-line-comment">${escHtml(line)}</span>`;
+        if (trimmed.startsWith('echo')) return `<span class="cfg-line-echo">${escHtml(line)}</span>`;
+        if (trimmed.startsWith('bind')) return `<span class="cfg-line-bind">${escHtml(line)}</span>`;
+
+        const spaceIdx = trimmed.search(/\s/);
+        if (spaceIdx > 0) {
+            const key = line.slice(0, line.indexOf(trimmed) + spaceIdx);
+            const val = line.slice(line.indexOf(trimmed) + spaceIdx);
+            return `<span class="cfg-line-key">${escHtml(key)}</span><span class="cfg-line-value">${escHtml(val)}</span>`;
+        }
+        return escHtml(line);
+    }).join('\n');
+}
+
+// Wire up the config download link + copy button to the raw (non-highlighted) text
+function wireConfigDownload(data) {
+    const raw = data.config || '';
+
+    const blob = new Blob([raw], { type: 'text/plain' });
+    const blobUrl = URL.createObjectURL(blob);
+    const downloadBtn = document.getElementById('btnDownload');
+    if (downloadBtn) downloadBtn.href = blobUrl;
+
+    const copyBtn = document.querySelector('[data-cfg-raw]');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(raw.trim());
+                const original = copyBtn.innerHTML;
+                copyBtn.classList.add('copied');
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> <span>Copied!</span>';
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.innerHTML = original;
+                }, 1500);
+            } catch (e) {
+                console.warn('Copy failed:', e);
+            }
+        });
+    }
+}
+
+// ===== PAGE NAVIGATION (active state safety-net) =====
 function initPageNavigation(activePage) {
-    const navElement = document.querySelector('.setup-nav');
-    if (!navElement) return;
-    
-    const pages = [
-        { id: 'games', name: 'Game', icon: 'gamepad' },
-        { id: 'video', name: 'Video', icon: 'video' },
-        { id: 'eq', name: 'Gear', icon: 'keyboard' },
-        { id: 'binds', name: 'Binds', icon: 'key' },
-        { id: 'config', name: 'Config', icon: 'code' }
-    ];
-    
-    const navHTML = pages.map(page => {
-        const href = `../${page.id}/`;
-        const isActive = activePage === page.id;
-        return `
-            <a href="${href}" class="nav-tab ${isActive ? 'active' : ''}">
-                <i class="fas fa-${page.icon}"></i>
-                ${page.name}
-            </a>
-        `;
-    }).join('');
-    
-    navElement.querySelector('.container').innerHTML = navHTML;
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.dataset.page === activePage);
+    });
 }
 
 // ===== UPDATE PAGE TITLE =====
@@ -476,13 +313,6 @@ function updatePageTitle(pageType) {
         'binds': 'Key Binds',
         'config': 'Full Config'
     };
-    
     const title = titles[pageType] || 'Setup';
     document.title = `ANGELKACS | ${title}`;
-    
-    // Update page header if it exists
-    const pageTitle = document.querySelector('.setup-title');
-    if (pageTitle) {
-        pageTitle.textContent = title;
-    }
 }

@@ -3,63 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANGELKACS | Gear & Equipment</title>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=Paytone+One&display=swap" rel="stylesheet">
+    <title>ANGELKACS | Gear &amp; Equipment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/setup.css">
     <link rel="icon" type="image/png" href="../../images/favicon.png">
 </head>
-<body class="setup-page">
+<body>
     <div class="background-overlay"></div>
 
-    <!-- Top Bar -->
-    <header class="top-bar">
-        <div class="container">
-            <div class="top-logo">ANGELKACS</div>
-            <div class="top-links">
-                <div class="social-links">
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <a href="../" class="brand">
+                    <span class="brand-mark">A</span>
+                    <span class="brand-text">ANGELKACS</span>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <span class="nav-section-label">Setup</span>
+                <a href="../" class="nav-link" data-page="overview"><i class="fas fa-gauge-high"></i><span>Overview</span></a>
+                <a href="../games/" class="nav-link" data-page="games"><i class="fas fa-crosshairs"></i><span>Game</span></a>
+                <a href="../video/" class="nav-link" data-page="video"><i class="fas fa-display"></i><span>Video</span></a>
+                <a href="./" class="nav-link active" data-page="eq"><i class="fas fa-headset"></i><span>Gear</span></a>
+                <a href="../binds/" class="nav-link" data-page="binds"><i class="fas fa-keyboard"></i><span>Binds</span></a>
+                <a href="../config/" class="nav-link" data-page="config"><i class="fas fa-terminal"></i><span>Config</span></a>
+            </nav>
+            <div class="sidebar-bottom">
+                <a href="https://angelkacs.pl" target="_blank" class="ext-link">
+                    <span>angelkacs.pl</span>
+                    <i class="fas fa-arrow-up-right-from-square"></i>
+                </a>
+                <div class="sidebar-socials">
                     <a href="https://www.youtube.com/@angelkacs" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
                     <a href="https://www.twitch.tv/angelkacs" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
                     <a href="https://discord.gg/rKGKQbuBxm" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
                 </div>
-                <div class="contact-info">
-                    <div>&copy; <span id="currentYear"></span> ANGELKACS. All rights reserved.</div>
-                    <div>Contact: <a href="mailto:angelka@stormmedia.gg">angelka@stormmedia.gg</a></div>
+                <div class="sidebar-meta">
+                    &copy; <span id="currentYear"></span> ANGELKACS<br>
+                    <a href="mailto:angelka@stormmedia.gg">angelka@stormmedia.gg</a>
                 </div>
             </div>
-        </div>
-    </header>
+        </aside>
 
-    <!-- Page Header -->
-    <header class="setup-header">
-        <div class="container">
-            <div class="setup-header-nav">
-                <a href="https://angelkacs.pl" class="back-to-main back-to-angelka" target="_blank">
-                    <i class="fas fa-home"></i>
-                    angelkacs.pl
-                </a>
-                <a href="../" class="back-to-main">
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Setup
-                </a>
-            </div>
-            <h1 class="setup-title">Gear &amp; Equipment</h1>
-            <p class="setup-subtitle">PC build, peripherals and setup details</p>
-        </div>
-    </header>
+        <div class="app-main">
+            <header class="topbar">
+                <div class="topbar-heading">
+                    <span class="page-eyebrow">Setup / Gear</span>
+                    <h1 class="page-title">Gear &amp; Equipment</h1>
+                </div>
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span class="status-label">CS2 &middot; Live Config</span>
+                </div>
+            </header>
 
-    <!-- Navigation -->
-    <nav class="setup-nav">
-        <div class="container"></div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="setup-content">
-        <div class="container">
-            <div id="pageContent"></div>
+            <main class="page-content">
+                <div id="pageContent"></div>
+            </main>
         </div>
-    </main>
+    </div>
 
     <script src="../js/main.js"></script>
     <script src="../js/setup-loader.js"></script>
