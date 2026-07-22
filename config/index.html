@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANGELKACS | Full Config</title>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;900&family=Paytone+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/setup.css">
+    <link rel="icon" type="image/png" href="../../images/favicon.png">
+    <style>
+        .cfg-wrapper {
+            margin-top: 24px;
+        }
+
+        .cfg-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            padding: 10px 18px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .cfg-toolbar-label {
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .cfg-toolbar-label span {
+            color: rgba(255,255,255,0.2);
+            margin: 0 6px;
+        }
+
+        .cfg-toolbar-filename {
+            color: rgba(255,255,255,0.75);
+        }
+
+        .cfg-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-cfg {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 16px;
+            border-radius: 5px;
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.18s ease;
+        }
+
+        .btn-download {
+            background: #e8a020;
+            color: #0d0d0d;
+        }
+
+        .btn-download:hover {
+            background: #f5b030;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(232,160,32,0.35);
+        }
+
+        .btn-copy {
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .btn-copy:hover {
+            background: rgba(255,255,255,0.14);
+            color: #fff;
+        }
+
+        .btn-copy.copied {
+            background: rgba(80, 200, 120, 0.15);
+            border-color: rgba(80, 200, 120, 0.4);
+            color: #6ee09a;
+        }
+
+        .cfg-code-block {
+            background: rgba(8, 8, 12, 0.85);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0 0 8px 8px;
+            overflow-x: auto;
+            padding: 24px 28px;
+        }
+
+        .cfg-code-block pre {
+            margin: 0;
+            font-family: 'Consolas', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 13.5px;
+            line-height: 1.75;
+            color: #c8d0e0;
+            white-space: pre;
+        }
+
+        /* Syntax highlighting */
+        .cfg-line-comment  { color: #5a6a7a; font-style: italic; }
+        .cfg-line-echo     { color: #e8a020; }
+        .cfg-line-bind     { color: #8bbcf0; }
+        .cfg-line-key      { color: #a8d8a0; }
+        .cfg-line-value    { color: #e090b0; }
+        .cfg-line-section  { color: rgba(255,255,255,0.25); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px; margin-top: 6px; display: block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Titillium Web', sans-serif; }
+    </style>
+</head>
+<body class="setup-page">
+    <div class="background-overlay"></div>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <div class="container">
+            <div class="top-logo">ANGELKACS</div>
+            <div class="top-links">
+                <div class="social-links">
+                    <a href="https://www.youtube.com/@angelkacs" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.twitch.tv/angelkacs" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
+                    <a href="https://discord.gg/rKGKQbuBxm" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+                <div class="contact-info">
+                    <div>&copy; <span id="currentYear"></span> ANGELKACS. All rights reserved.</div>
+                    <div>Contact: <a href="mailto:angelka@stormmedia.gg">angelka@stormmedia.gg</a></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <header class="setup-header">
+        <div class="container">
+            <div class="setup-header-nav">
+                <a href="https://angelkacs.pl" class="back-to-main back-to-angelka" target="_blank">
+                    <i class="fas fa-home"></i>
+                    angelkacs.pl
+                </a>
+                <a href="../" class="back-to-main">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Setup
+                </a>
+            </div>
+            <h1 class="setup-title">Full Config</h1>
+            <p class="setup-subtitle">Complete autoexec.cfg configuration file</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="setup-nav">
+        <div class="container"></div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="setup-content">
+        <div class="container">
+            <div id="pageContent">
+                <div class="cfg-wrapper">
+                    <div class="cfg-toolbar">
+                        <div class="cfg-toolbar-label">
+                            <i class="fas fa-file-code" style="margin-right:7px;opacity:.5"></i>
+                            <span class="cfg-toolbar-filename">autoexec.cfg</span>
+                            <span>|</span>
+                            CS2 Config
+                        </div>
+                        <div class="cfg-actions">
+                            <button class="btn-cfg btn-copy" id="btnCopy" onclick="copyCfg()">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <a class="btn-cfg btn-download" id="btnDownload" download="autoexec.cfg">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                    <div class="cfg-code-block">
+                        <pre id="cfgContent"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // -- Set year ----------------------------------------------
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // -- Raw config content ------------------------------------
+        const CFG_RAW = `echo "A man can be destroyed, but not defeated."
+
+sensitivity 1.5
+
+rate "786432"
+fps_max "0"
+cl_allow_animated_avatars "0"
+cl_sniper_auto_rezoom "1"
+cl_crosshair_recoil "0"
+cl_hud_color "9"
+r_show_build_info  0
+cl_grenadecrosshairdelay_smoke 0 
+cl_grenadecrosshairdelay_explosive 0 
+cl_grenadecrosshairdelay_flash 0 
+cl_grenadecrosshairdelay_fire 0 
+cl_grenadecrosshairdelay_decoy 0
+cl_grenadecrosshair_decoy 0
+cl_grenadecrosshair_flash 0
+cl_grenadecrosshair_fire 0
+cl_grenadecrosshair_smoke 0 
+cl_grenadecrosshair_explosive 0
+cl_grenadecrosshair_keepusercrosshair 0 
+
+
+viewmodel_presetpos 0
+viewmodel_fov 66
+viewmodel_offset_x 1.000000
+viewmodel_offset_y 1.000000
+viewmodel_offset_z -1.500000
+
+hud_scaling 0.9
+cl_hud_color 9
+cl_radar_always_centered false
+cl_radar_icon_scale_min	0.400000
+cl_radar_rotate	true
+cl_radar_scale 0.475000
+cl_radar_scale_alternate 1.000000
+cl_radar_square_with_scoreboard	true
+
+
+bind "MWHEELUP" "+JUMP"
+bind "MWHEELDOWN" "+JUMP"
+bind "scancode44" "+JUMP"
+bind "scancode16" "noclip"
+bind "MOUSE5" "player_ping"
+
+
+bind "scancode6" "slot3; slot7"
+bind "scancode29" "slot3; slot10"
+bind "scancode33" "slot3; slot6"
+bind "scancode27" "slot3; slot8" 
+bind "scancode39" "slot3; slot9" 
+bind "scancode23" "toggle cl_crosshairsize 1 1000"
+r_fullscreen_gamma 2
+
+
+// bind "C" "slot3; slot7"
+// bind "z" "slot3; slot10"
+// bind "4" "slot3; slot6"
+// bind "X" "slot3; slot8" 
+// bind "0" "slot3; slot9" 
+
+joystick 0
+
+
+voice_always_sample_mic	false
+voice_modenable	true
+voice_threshold	-30.000000
+
+echo "FIRE IN THE HOLE"
+echo "BE THE BEST YOU CAN"
+echo "NEW DAY NEW OPPORTUNITIES"
+echo "BE CONFIDENT ??"`;
+
+        // -- Render with simple syntax highlighting ----------------
+        function renderCfg(raw) {
+            return raw.split('\n').map(line => {
+                const trimmed = line.trim();
+                if (trimmed === '') return '';
+                if (trimmed.startsWith('//'))
+                    return `<span class="cfg-line-comment">${esc(line)}</span>`;
+                if (trimmed.startsWith('echo'))
+                    return `<span class="cfg-line-echo">${esc(line)}</span>`;
+                if (trimmed.startsWith('bind')) {
+                    return `<span class="cfg-line-bind">${esc(line)}</span>`;
+                }
+                // key value pairs
+                const spaceIdx = trimmed.search(/\s/);
+                if (spaceIdx > 0) {
+                    const key = trimmed.slice(0, spaceIdx);
+                    const val = line.slice(line.indexOf(trimmed) + spaceIdx);
+                    return `<span class="cfg-line-key">${esc(line.slice(0, line.indexOf(trimmed) + spaceIdx))}</span><span class="cfg-line-value">${esc(val)}</span>`;
+                }
+                return esc(line);
+            }).join('\n');
+        }
+
+        function esc(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        document.getElementById('cfgContent').innerHTML = renderCfg(CFG_RAW);
+
+        // -- Build download link from Blob -------------------------
+        const blob = new Blob([CFG_RAW], { type: 'text/plain' });
+        const blobUrl = URL.createObjectURL(blob);
+        document.getElementById('btnDownload').href = blobUrl;
+
+        // -- Copy to clipboard -------------------------------------
+        async function copyCfg() {
+            try {
+                await navigator.clipboard.writeText(CFG_RAW);
+                const btn = document.getElementById('btnCopy');
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            } catch (e) {
+                alert('Nie mozna skopiowac – uzyj CTRL+A i CTRL+C w bloku kodu.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "setup": [
+    {"name": "HEADPHONES", "value": "Logitech G PRO X 2 Lightspeed White"},
+    {"name": "KEYBOARD", "value": "Logitech G PRO X TKL"},
+    {"name": "MOUSEPAD", "value": "Mousepad NAVI L"},
+    {"name": "MOUSE", "value": "Logitech PRO X2 SUPERSTRIKE"},
+    {"name": "MONITOR", "value": "BENQ XL2586X+"},
+    {"name": "SECOND MONITOR", "value": "ASUS VG248QE"},
+    {"name": "WEBCAM", "value": "Sony A6400"}
+  ],
+  "pcBuild": [
+    {"name": "PROCESSOR", "value": "AMD Ryzen 7 9800X3D"},
+    {"name": "GRAPHICS CARD", "value": "MSI GeForce RTX 5080 Suprim SOC 16GB GDDR7 DLSS4"},
+    {"name": "MOTHERBOARD", "value": "Asus ROG STRIX X870E-E GAMING WIFI"},
+    {"name": "RAM", "value": "G.Skill Trident Z5 Royal Neo, DDR5, 48 GB, 8000MHz, CL40"},
+    {"name": "POWER SUPPLY", "value": "EVGA SuperNOVA G3 850W"},
+    {"name": "DISK 1", "value": "Kingston KC3000 2TB M.2 Pcie 4.0 NVMe"},
+    {"name": "CASE", "value": "SilentiumPC Regnum RG4T RGB Pure Black"},
+    {"name": "WATER COOLING", "value": "Lian Li Galahad II Trinity Performance 360"}
+  ]
+}

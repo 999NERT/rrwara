@@ -1,0 +1,15 @@
+{
+  "binds": [
+    {"key": "SPACE", "action": "+JUMP", "description": "Jump"},
+    {"key": "M", "action": "noclip", "description": "Toggle noclip (for practice)"},
+    {"key": "C", "action": "slot3; slot7", "description": "Flashbang"},
+    {"key": "Z", "action": "slot3; slot10", "description": "Molotov/Incendiary"},
+    {"key": "4", "action": "slot3; slot6", "description": "HE Grenade"},
+    {"key": "X", "action": "slot3; slot8", "description": "Smoke Grenade"},
+    {"key": "0", "action": "slot3; slot9", "description": "Decoy Grenade"},
+    {"key": "T", "action": "toggle cl_crosshairsize 1000 1", "description": "Toggle crosshair size for smoke alignment"}
+  ],
+  "commands": {
+    "all": "bind \"SPACE\" \"+JUMP\"; bind \"M\" \"noclip\"; bind \"C\" \"slot3; slot7\"; bind \"Z\" \"slot3; slot10\"; bind \"4\" \"slot3; slot6\"; bind \"X\" \"slot3; slot8\"; bind \"0\" \"slot3; slot9\"; bind \"T\" \"toggle cl_crosshairsize 1000 1\""
+  }
+}

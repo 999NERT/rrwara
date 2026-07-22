@@ -1,0 +1,51 @@
+{
+  "mouseSettings": [
+    {"name": "DPI", "value": "400"},
+    {"name": "Sensitivity", "value": "1.5"},
+    {"name": "eDPI", "value": "600"},
+    {"name": "Zoom Sensitivity", "value": "1.0"},
+    {"name": "Polling Rate", "value": "1000 Hz"},
+    {"name": "Windows Sensitivity", "value": "6/11"},
+    {"name": "Sniper Crosshair", "value": "2"}
+  ],
+  "viewmodelSettings": [
+    {"name": "Viewmodel FOV", "value": "66"},
+    {"name": "Offset X", "value": "1.0"},
+    {"name": "Offset Y", "value": "1.0"},
+    {"name": "Offset Z", "value": "-1.5"},
+    {"name": "Preset Position", "value": "0"}
+  ],
+  "crosshairSettings": [
+    {"name": "Style", "value": "4"},
+    {"name": "Size", "value": "1"},
+    {"name": "Thickness", "value": "0.5"},
+    {"name": "Gap", "value": "-2"},
+    {"name": "Outline", "value": "Yes"},
+    {"name": "Outline Thickness", "value": "1"},
+    {"name": "Color", "value": "4"},
+    {"name": "Dot", "value": "0"},
+    {"name": "Alpha/RGB", "value": "255"},
+    {"name": "Recoil", "value": "0"},
+    {"name": "Sniper Delay Scope", "value": "0"},
+    {"name": "Sniper Rezoom Auto", "value": "1"},
+    {"name": "New Crosshair Sniper", "value": "0"},
+    {"name": "Friendly Warning", "value": "0"}
+  ],
+  "hudSettings": [
+    {"name": "HUD Scale", "value": "0.9"},
+    {"name": "HUD Color", "value": "9"},
+    {"name": "Radar Centers Player", "value": "No"},
+    {"name": "Radar is Rotating", "value": "Yes"},
+    {"name": "Radar Square with Scoreboard", "value": "Yes"},
+    {"name": "Radar Icon Scale Min", "value": "0.4"},
+    {"name": "Radar Map Zoom", "value": "0.475"},
+    {"name": "Radar Scale Alternate", "value": "1.0"}
+  ],
+  "commands": {
+    "mouse": "sensitivity 1.5; cl_crosshair_sniper_width 2",
+    "viewmodel": "viewmodel_fov 66; viewmodel_offset_x 1.0; viewmodel_offset_y 1.0; viewmodel_offset_z -1.5; viewmodel_presetpos 0",
+    "crosshair": "cl_crosshairstyle 4; cl_crosshair_recoil 0; cl_crosshair_drawoutline 1; cl_crosshairdot 0; cl_crosshair_outlinethickness 1; cl_crosshairsize 1; cl_crosshairgap -2; cl_crosshairthickness 0.5; cl_crosshaircolor 4; cl_crosshairalpha 255; cl_crosshair_friendly_warning 0; cl_sniper_delay_unscope 0; cl_sniper_auto_rezoom 1; cl_crosshair_sniper_width 0; cl_crosshaircolor_r 255; cl_crosshaircolor_g 255; cl_crosshaircolor_b 255;",
+    "shareCode": "CSGO-zkcbL-LyW5h-vZWOY-TkqMh-MXkoE",
+    "hud": "hud_scaling 0.9; cl_hud_color 9; cl_radar_always_centered 0; cl_radar_rotate 1; cl_radar_square_with_scoreboard 1; cl_radar_icon_scale_min 0.4; cl_radar_scale 0.475; cl_radar_scale_alternate 1.0"
+  }
+}
